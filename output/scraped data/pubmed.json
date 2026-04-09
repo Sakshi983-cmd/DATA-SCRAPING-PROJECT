@@ -1,0 +1,46 @@
+[
+  {
+    "source_url": "https://pubmed.ncbi.nlm.nih.gov/30617339/",
+    "source_type": "pubmed",
+    "pmid": "30617339",
+    "title": "High-performance medicine: the convergence of human and artificial intelligence.",
+    "author": [
+      "Eric J Topol"
+    ],
+    "journal": "Nature medicine",
+    "published_date": "2019-Jan-01",
+    "language": "en",
+    "region": "Global",
+    "topic_tags": [
+      "Humans",
+      "medicine",
+      "Data Analysis",
+      "Cybersecurity",
+      "Algorithms",
+      "Ethics / Bias",
+      "artificial",
+      "artificial intelligence",
+      "Healthcare",
+      "AI",
+      "Artificial Intelligence",
+      "intelligence",
+      "Deep Learning"
+    ],
+    "trust_score": 0.612,
+    "citation_count": 2640,
+    "abstract": "The use of artificial intelligence, and the deep-learning subtype in particular, has been enabled by the use of labeled big data, along with markedly enhanced computing power and cloud storage, across all sectors. In medicine, this is beginning to have an impact at three levels: for clinicians, predominantly via rapid, accurate image interpretation; for health systems, by improving workflow and the potential for reducing medical errors; and for patients, by enabling them to process their own data to promote health. The current limitations, including bias, privacy and security, and lack of transparency, along with the future directions of these applications will be discussed in this article. Over time, marked improvements in accuracy, productivity, and workflow will likely be actualized, but whether that will be used to improve the patient-doctor relationship or facilitate its erosion remains to be seen.",
+    "mesh_terms": [
+      "Algorithms",
+      "Artificial Intelligence",
+      "Data Analysis",
+      "Deep Learning",
+      "Humans",
+      "Medicine",
+      "Physicians"
+    ],
+    "content_chunks": [
+      "High-performance medicine: the convergence of human and artificial intelligence. The use of artificial intelligence, and the deep-learning subtype in particular, has been enabled by the use of labeled big data, along with markedly enhanced computing power and cloud storage, across all sectors. In medicine, this is beginning to have an impact at three levels: for clinicians, predominantly via rapid, accurate image interpretation; for health systems, by improving workflow and the potential for reducing medical errors; and for patients, by enabling them to process their own data to promote health. The current limitations, including bias, privacy and security, and lack of transparency, along with the future directions of these applications will be discussed in this article.",
+      "nsparency, along with the future directions of these applications will be discussed in this article. Over time, marked improvements in accuracy, productivity, and workflow will likely be actualized, but whether that will be used to improve the patient-doctor relationship or facilitate its erosion remains to be seen."
+    ]
+  }
+]
