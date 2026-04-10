@@ -1,208 +1,253 @@
-# Multi-Source Scraper & Trust Scoring System
+<div align="center">
 
-A data ingestion pipeline that scrapes structured content from blogs, YouTube, and PubMed,
-then scores each source on a 0–1 reliability scale using a custom trust algorithm.
+# 🕷️ Multi-Source Web Scraper & Trust Scoring System
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&pause=1000&color=6C63FF&center=true&vCenter=true&width=600&lines=Web+Scraping+%2B+Trust+Scoring+Pipeline;Blogs+%7C+YouTube+%7C+PubMed;Built+with+Python+%F0%9F%90%8D" alt="Typing SVG" />
+
+<br/>
+
+![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![BeautifulSoup](https://img.shields.io/badge/BeautifulSoup4-Scraping-4CAF50?style=for-the-badge)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-TF--IDF-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![Status](https://img.shields.io/badge/Status-✅%20Complete-brightgreen?style=for-the-badge)
+
+<br/>
+
+> 🤖 **An AI-powered pipeline that automatically scrapes the internet, understands content, and judges how trustworthy each source is — all in one command.**
+
+</div>
 
 ---
 
-## Project Structure
+## 🖥️ Pipeline Output
+
+> Real output from running `python main.py` on live internet data:
+
+![Pipeline Output](assets/Screenshot%202026-04-09%20200030.png)
+
+---
+
+## 🔄 How It Works — Full Pipeline Flow
 
 ```
-project/
-├── main.py                        ← Orchestrator: run this to scrape all sources
-├── scraper/
-│   ├── blog_scraper.py            ← Blog scraper (requests + BeautifulSoup)
-│   ├── youtube_scraper.py         ← YouTube scraper (Data API v3 + transcript API)
-│   └── pubmed_scraper.py          ← PubMed scraper (NCBI E-utilities)
-├── scoring/
-│   └── trust_score.py             ← Trust score algorithm + abuse prevention
-├── utils/
-│   ├── tagging.py                 ← Auto topic tagging (TF-IDF + taxonomy)
-│   └── chunking.py                ← Content chunking with overlap
-└── output/
-    ├── scraped_data.json          ← Combined dataset (all 6 records)
+┌─────────────────────────────────────────────────────────────────────┐
+│                        python main.py                               │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          │                    │                    │
+          ▼                    ▼                    ▼
+  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+  │  📰  BLOGS   │    │  📺 YOUTUBE  │    │  🔬 PUBMED   │
+  │              │    │              │    │              │
+  │  requests +  │    │  YT API v3   │    │  NCBI API    │
+  │BeautifulSoup │    │  +Transcript │    │  (Free XML)  │
+  │              │    │              │    │              │
+  │ → Title      │    │ → Channel    │    │ → Title      │
+  │ → Author     │    │ → Date       │    │ → Authors    │
+  │ → Date       │    │ → Transcript │    │ → Abstract   │
+  │ → Content    │    │ → Views/Likes│    │ → Citations  │
+  └──────┬───────┘    └──────┬───────┘    └──────┬───────┘
+         │                   │                   │
+         └───────────────────┼───────────────────┘
+                             │
+                             ▼
+          ┌──────────────────────────────────┐
+          │           🛠️ UTILS               │
+          │                                  │
+          │  tagging.py                      │
+          │  ┌────────────────────────────┐  │
+          │  │ TF-IDF + Taxonomy Matching │  │
+          │  │ → ["AI", "Healthcare",     │  │
+          │  │    "Web Scraping", ...]    │  │
+          │  └────────────────────────────┘  │
+          │                                  │
+          │  chunking.py                     │
+          │  ┌────────────────────────────┐  │
+          │  │ Split long text into       │  │
+          │  │ paragraph-sized chunks     │  │
+          │  │ with overlap               │  │
+          │  └────────────────────────────┘  │
+          └─────────────────┬────────────────┘
+                            │
+                            ▼
+          ┌──────────────────────────────────┐
+          │        🧠 TRUST SCORE            │
+          │                                  │
+          │  Score = w1 × author_credibility │
+          │        + w2 × citation_score     │
+          │        + w3 × domain_authority   │
+          │        + w4 × recency_score      │
+          │        + w5 × disclaimer_score   │
+          │        × abuse_penalty           │
+          │                                  │
+          │  Result → 0.0 ──────────── 1.0   │
+          │           ❌ Spam      ✅ Trusted │
+          └─────────────────┬────────────────┘
+                            │
+                            ▼
+          ┌──────────────────────────────────┐
+          │         💾 OUTPUT JSON           │
+          │                                  │
+          │  output/scraped_data.json        │
+          │  output/scraped_data/            │
+          │    ├── blogs.json                │
+          │    ├── youtube.json              │
+          │    └── pubmed.json               │
+          └──────────────────────────────────┘
+```
+
+---
+
+## 📁 Project Structure
+
+```
+DATA-SCRAPING-PROJECT/
+│
+├── 📄 main.py                 ← Entry point — runs everything
+├── 📘 README.md
+├── 📝 report.md
+│
+├── 🕷️ scraper/
+│   ├── blog_scraper.py        ← BeautifulSoup + requests
+│   ├── youtube_scraper.py     ← YouTube API v3 + Transcripts
+│   └── pubmed_scraper.py      ← NCBI E-utilities (free)
+│
+├── 🧠 scoring/
+│   └── trust_score.py         ← Weighted trust algorithm
+│
+├── 🛠️ utils/
+│   ├── tagging.py             ← TF-IDF auto topic tagging
+│   └── chunking.py            ← Overlap-aware chunker
+│
+├── 🖼️ assets/
+│   └── Screenshot 2026-04-09 200030.png
+│
+└── 📊 output/
+    ├── scraped_data.json       ← All 6 records
     └── scraped_data/
-        ├── blogs.json             ← 3 blog post records
-        ├── youtube.json           ← 2 YouTube video records
-        └── pubmed.json            ← 1 PubMed article record
+        ├── blogs.json
+        ├── youtube.json
+        └── pubmed.json
 ```
 
 ---
 
-## Setup & Installation
-
-### Requirements
-- Python 3.9+
-- pip
-
-### Install Dependencies
-```bash
-pip install requests beautifulsoup4 scikit-learn langdetect \
-            youtube-transcript-api lxml
-```
-
-### Optional (for YouTube metadata)
-Get a free API key from [Google Cloud Console](https://console.cloud.google.com/), enable the YouTube Data API v3, and set:
-```bash
-export YOUTUBE_API_KEY="your_key_here"
-```
-
-### Optional (for higher PubMed rate limits)
-```bash
-export NCBI_API_KEY="your_key_here"
-```
-
----
-
-## How to Run
+## ⚙️ Quick Start
 
 ```bash
-cd project/
+# 1. Clone
+git clone https://github.com/Sakshi983-cmd/DATA-SCRAPING-PROJECT.git
+cd DATA-SCRAPING-PROJECT
+
+# 2. Install
+pip install requests beautifulsoup4 scikit-learn langdetect youtube-transcript-api lxml
+
+# 3. Run
 python main.py
 ```
 
-This will:
-1. Scrape 3 blog posts
-2. Scrape 2 YouTube videos
-3. Scrape 1 PubMed article
-4. Calculate trust scores for all 6
-5. Save output to `output/scraped_data/`
-
-To run individual scrapers:
-```bash
-python scraper/blog_scraper.py
-python scraper/youtube_scraper.py
-python scraper/pubmed_scraper.py
-```
-
 ---
 
-## Tools & Libraries
-
-| Library | Purpose |
-|---|---|
-| `requests` | HTTP requests for blog and PubMed |
-| `beautifulsoup4` | HTML parsing for blogs |
-| `lxml` | Fast HTML/XML parser backend |
-| `youtube-transcript-api` | Fetch YouTube auto-captions |
-| `scikit-learn` | TF-IDF keyword extraction |
-| `langdetect` | Automatic language detection |
-| NCBI E-utilities API | PubMed metadata + citations (free) |
-| YouTube Data API v3 | Video metadata (requires key) |
-
----
-
-## Scraping Approach
-
-### Blogs
-- HTTP GET with a realistic browser User-Agent to reduce bot detection.
-- BeautifulSoup removes nav, footer, script, and ads before extracting text.
-- Author extracted from `<meta name="author">`, JSON-LD schema, or CSS class patterns.
-- Publish date extracted from `<time>`, `article:published_time` meta, or `itemprop`.
-
-### YouTube
-- Primary path: YouTube Data API v3 (`/videos?part=snippet,statistics`).
-- Transcript: `youtube-transcript-api` — fetches auto-generated or manual captions.
-- Fallback (no API key): scrape `og:title` and `og:description` from page HTML.
-- Content = title + description + transcript (concatenated for tagging and chunking).
-
-### PubMed
-- Uses NCBI eFetch (`/efetch.fcgi?db=pubmed&retmode=xml`) — no API key required.
-- Parses XML for title, all authors, journal, abstract (with section labels), MeSH terms.
-- Citation count retrieved via NCBI eLink (`pubmed_pmc_refs`).
-
----
-
-## Trust Score Design
+## 🧠 Trust Score — Deep Dive
 
 ### Formula
 ```
-TrustScore = w1 × author_credibility
-           + w2 × citation_score
-           + w3 × domain_authority
-           + w4 × recency_score
-           + w5 × disclaimer_score
+TrustScore = w1×author + w2×citations + w3×domain + w4×recency + w5×disclaimer
            × abuse_penalty_multiplier
+
+Range: 0.0 (Spam) → 1.0 (Highly Trusted)
 ```
 
-All weights sum to 1.0. Weights are **tuned per source type**:
+### Weight Table
 
-| Component | Blog | YouTube | PubMed |
-|---|---|---|---|
-| author_credibility | 0.25 | 0.25 | 0.20 |
-| citation_score | 0.15 | 0.05 | 0.30 |
-| domain_authority | 0.30 | 0.30 | 0.20 |
-| recency | 0.20 | 0.25 | 0.15 |
-| disclaimer | 0.10 | 0.15 | 0.15 |
+| Component | 📰 Blog | 📺 YouTube | 🔬 PubMed |
+|:---|:---:|:---:|:---:|
+| 👤 Author Credibility | 0.25 | 0.25 | 0.20 |
+| 📚 Citation Score | 0.15 | 0.05 | **0.30** |
+| 🌐 Domain Authority | **0.30** | **0.30** | 0.20 |
+| 🕐 Recency | 0.20 | **0.25** | 0.15 |
+| ⚕️ Disclaimer | 0.10 | 0.15 | 0.15 |
 
-### Component Details
+### Real Scores from This Run
 
-**Author Credibility (0–1)**
-- Unknown author → 0.1
-- Author matched to known credible org (NIH, Harvard, WHO, etc.) → 0.95
-- Full name (first + last) → 0.55; single/handle → 0.40
-- Multiple authors → average with 1.05× consensus bonus
-
-**Citation Score (0–1)**
-- PubMed: log-scaled from 0 citations (0.10) to 100+ (1.00)
-- Blog: external link count as citation proxy (0–100+)
-- YouTube: fixed 0.50 (engagement substituted)
-
-**Domain Authority (0–1)**
-- Lookup table of ~25 curated domains (Nature → 0.97, blogspot → 0.30)
-- TLD fallback: `.edu`→0.80, `.gov`→0.85, `.com`→0.50, `.io`→0.50
-- YouTube engagement bonus: +0.10 max based on like/view ratio
-
-**Recency Score (0–1)**
-- < 6 months → 1.00, 6–12 months → 0.90, 1–2 yrs → 0.75
-- 2–3 yrs → 0.60, 3–5 yrs → 0.45, 5–10 yrs → 0.30, > 10 yrs → 0.15
-- Unknown date → 0.40 (neutral penalty)
-
-**Disclaimer Score (0–1)**
-- PubMed: always 1.0 (peer-reviewed)
-- Blog/YouTube with disclaimer → 1.0; without → 0.30
+| Source | Type | Trust Score |
+|:---|:---:|:---:|
+| Beautiful Soup Guide — RealPython | 📰 Blog | `0.630` ⭐ |
+| Web Scraping Crash Course | 📺 YouTube | `0.329` |
+| High-performance Medicine — Nature | 🔬 PubMed | `0.612` ⭐ |
 
 ---
 
-## Abuse Prevention
+## 🛡️ Abuse Prevention Logic
 
-| Attack | Detection | Penalty |
-|---|---|---|
-| Fake / anonymous author | Name not in credible org list | author_credibility → 0.10–0.40 |
-| SEO keyword stuffing | Top word frequency > 5% of total words | × 0.80 |
-| Medical content, no disclaimer | ≥ 3 medical keywords + no disclaimer | × 0.65 |
-| Low-quality hosting | Domain in spam list (blogspot, wix, etc.) | × 0.70 |
-| Stub / scraped thin content | < 100 words in body | × 0.75 |
-| Clickbait titles | Regex match on "you won't believe", etc. | × 0.85 |
+| 🚨 Attack | 🔍 Detection | ⚠️ Penalty |
+|:---|:---|:---:|
+| 👤 Fake/Anonymous Author | Not in credible org database | Score → `0.10` |
+| 🔁 SEO Keyword Stuffing | Top word freq > 5% of total | `× 0.80` |
+| 🏥 Medical, No Disclaimer | ≥3 medical keywords detected | `× 0.65` |
+| 🗑️ Spam Domain | blogspot / wix / weebly etc. | `× 0.70` |
+| 📄 Thin Content | < 100 words | `× 0.75` |
+| 🎣 Clickbait Title | Regex: "you won't believe" etc. | `× 0.85` |
 
-Maximum combined penalty: 0.50× (scores floored at 50% of raw).
-
----
-
-## Limitations
-
-1. **Network-dependent**: Scrapers require live internet access. Some sites block bots.
-2. **YouTube API quota**: 10,000 units/day on free tier; transcript may be unavailable for some videos.
-3. **Domain authority**: Lookup table is hand-curated. A production system would integrate Moz/Ahrefs API.
-4. **Language detection**: `langdetect` is probabilistic and may misclassify short texts.
-5. **PubMed citation count**: `eLink` only counts PMC references, not all-source citations. Crossref API would be more complete.
-6. **Dynamic pages**: JavaScript-rendered blogs (React/Vue SPAs) require Playwright/Selenium instead of requests.
+> 🔒 Max combined penalty: **0.50×** — score never drops below half of raw value.
 
 ---
 
-## Output Schema
+## 🏷️ Auto Topic Tagging Example
+
+```python
+Input:  "Deep learning model trained on clinical data for cancer detection..."
+
+Output: ["AI", "Deep Learning", "Healthcare", "clinical", "neural network"]
+```
+
+**Two-step process:**
+1. **Taxonomy Matching** → 13 curated categories (AI, Healthcare, Python, NLP...)
+2. **TF-IDF Keywords** → catches domain-specific terms not in taxonomy
+
+---
+
+## 📋 Output JSON Sample
 
 ```json
 {
-  "source_url": "https://...",
-  "source_type": "blog | youtube | pubmed",
-  "title": "Article / video title",
-  "author": "Name or list of names",
-  "published_date": "YYYY-MM-DD",
+  "source_url": "https://pubmed.ncbi.nlm.nih.gov/30617339/",
+  "source_type": "pubmed",
+  "title": "High-performance medicine: convergence of human and AI",
+  "author": ["Eric J. Topol"],
+  "published_date": "2019-01-07",
   "language": "en",
-  "region": "Global/US",
-  "topic_tags": ["AI", "Machine Learning", "Web Scraping"],
-  "trust_score": 0.743,
-  "content_chunks": ["Paragraph 1...", "Paragraph 2...", "..."]
+  "region": "Global",
+  "topic_tags": ["AI", "Healthcare", "Deep Learning"],
+  "trust_score": 0.612,
+  "citation_count": 9847,
+  "content_chunks": [
+    "Background: Artificial intelligence holds great promise...",
+    "Deep learning algorithms achieved diagnostic accuracy..."
+  ]
 }
 ```
+
+---
+
+## 🛠️ Tech Stack
+
+| Library | Use |
+|:---|:---|
+| `requests` | HTTP calls to websites |
+| `beautifulsoup4` | HTML parsing |
+| `lxml` | Fast XML parser |
+| `scikit-learn` | TF-IDF keyword extraction |
+| `langdetect` | Auto language detection |
+| `youtube-transcript-api` | YouTube captions |
+| NCBI E-utilities | PubMed data (free) |
+
+---
+
+<div align="center">
+
+**Made with 🖤 by Sakshi Tiwari**
+*AI Internship Assignment — GutBut 2026*
+
+</div>
